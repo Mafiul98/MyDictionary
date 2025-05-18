@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/layExpense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_shade"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        >
+
+
+
+        <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left"
+            >
+
+            <TextView
+                android:id="@+id/tvword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Word(Noun)"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/tvmeaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meaning"
+                android:textColor="#009688"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+
+
+            <TextView
+                android:id="@+id/tvexample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="example word"
+                android:textColor="#A5000000"
+                android:textSize="15sp"
+                android:padding="3dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                />
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
