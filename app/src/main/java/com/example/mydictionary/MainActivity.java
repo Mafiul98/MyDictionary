@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     ListView listview;
+    SearchView searchview;
     DataBaseHelper dbhelper;
     ArrayList<HashMap<String,String>> arrayList;
     HashMap<String,String> hashMap;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 .setAppearanceLightStatusBars(true);
         setContentView(R.layout.activity_main);
         listview=findViewById(R.id.listview);
+        searchview=findViewById(R.id.searchview);
         dbhelper = new DataBaseHelper(this);
 
         Cursor cursor = dbhelper.getAllData();
@@ -63,7 +66,25 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        listview.setAdapter(new myadapter());
+        loadData("");
+        myadapter myadapter = new myadapter();
+        listview.setAdapter(myadapter);
+
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                loadData(query);
+                myadapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                loadData(newText);
+                myadapter.notifyDataSetChanged();
+                return true;
+            }
+        });
 
     }
 
@@ -108,5 +129,40 @@ public class MainActivity extends AppCompatActivity {
 
             return myview;
         }
+    }
+
+    private void loadData(String keyword){
+        arrayList = new ArrayList<>();
+        Cursor cursor;
+
+        if (keyword.isEmpty()){
+            cursor = dbhelper.getAllData();
+        }else {
+            cursor = dbhelper.searchWord(keyword);
+        }
+
+        if (cursor!=null && cursor.getCount()>0){
+            while (cursor.moveToNext()) {
+
+                int id = cursor.getInt(0);
+                String word = cursor.getString(1);
+                String meaning = cursor.getString(2);
+                String partsOfSpeech = cursor.getString(3);
+                String example = cursor.getString(4);
+
+                hashMap = new HashMap<>();
+                hashMap.put("id", "" + id);
+                hashMap.put("word", word);
+                hashMap.put("meaning", meaning);
+                hashMap.put("partsOfSpeech", partsOfSpeech);
+                hashMap.put("example", example);
+                arrayList.add(hashMap);
+            }
+        }
+
+        if (cursor!=null){
+            cursor.close();
+        }
+
     }
 }
